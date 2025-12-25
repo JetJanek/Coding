@@ -28,6 +28,9 @@ typedef struct {
 int main(void)
 {
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Flappy Bird - raylib");
+    Texture2D birdTexture = LoadTexture("bird.png");
+    Texture2D pipeTexture = LoadTexture("pipe.png");
+
     SetTargetFPS(60);
 
     Bird bird = { SCREEN_HEIGHT / 2, 0 };
@@ -87,7 +90,8 @@ int main(void)
             if (bird.y < 0 || bird.y > SCREEN_HEIGHT)
                 gameOver = true;
 
-            Rectangle birdRec = { 100, bird.y, 30, 30 };
+            Rectangle birdRec = { 100, bird.y, 32, 32 };
+
             for (int i = 0; i < NUM_PIPES; i++)
             {
                 Rectangle topPipe = { pipes[i].x, 0, PIPE_WIDTH, pipes[i].gapY };
@@ -117,7 +121,7 @@ int main(void)
         BeginDrawing();
         ClearBackground(SKYBLUE);
 
-        DrawRectangle(100, bird.y, 30, 30, YELLOW);
+        DrawTexture(birdTexture, 100, bird.y, WHITE);
 
         for (int i = 0; i < NUM_PIPES; i++)
         {
@@ -144,6 +148,9 @@ int main(void)
         fprintf(fileOut, "%d", highscore);
         fclose(fileOut);
     }
+
+    UnloadTexture(birdTexture);
+    UnloadTexture(pipeTexture);
 
     CloseWindow();
     return 0;
